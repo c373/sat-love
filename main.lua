@@ -16,6 +16,16 @@ function love.load()
 		"dynamic"
 	)
 
+	triMesh = love.graphics.newMesh(
+		{
+			{ 10, -10, 0, 0, 1, 1, 1, 1 },
+			{ 0, 10, 0, 0, 1, 1, 1, 1 },
+			{ -10, -10, 0, 0, 1, 1, 1, 1 }
+		},
+		"fan",
+		"dynamic"
+	)
+
 	vertices = {}
 
 	for i = 1, mesh:getVertexCount(), 1 do
@@ -28,7 +38,22 @@ function love.load()
 	axes = {}
 
 	GenerateAxes( vertices, edges, axes )
-	
+
+	triVertices = {}
+
+	for i = 1, triMesh:getVertexCount(), 1 do
+		
+		triVertices[ #triVertices + 1 ] = { triMesh:getVertex( i ) }
+
+	end
+
+	triEdges = {}
+	triAxes = {}
+
+	GenerateAxes( triVertices, triEdges, triAxes )
+
+	triPosition = { 0, 0 }
+
 end
 
 ------------------------------------------------------------
@@ -36,6 +61,9 @@ end
 ------------------------------------------------------------
 
 function love.update( dt )
+
+	triPosition[1] = love.mouse.getX()
+	triPosition[2] = love.mouse.getY()
 
 end
 
@@ -45,7 +73,9 @@ end
 
 function love.draw()
 
+	love.graphics.push()
 	love.graphics.translate( love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5 )
+	
 	love.graphics.draw( mesh, 0, 0 )
 
 	for i = 0, #vertices - 1, 1 do
@@ -63,6 +93,25 @@ function love.draw()
 		love.graphics.line( 0, 0, axes[i][1], axes[i][2] )
 
 	end
+
+	love.graphics.pop()
+
+	love.graphics.push()
+	love.graphics.translate( triPosition[1], triPosition[2] )
+	
+	love.graphics.draw( triMesh, 0, 0 )
+
+
+	for i = 1, #triAxes, 1 do
+	
+		local n = i + 1
+		if n > #triAxes then n = 1 end
+
+		love.graphics.line( 0, 0, triAxes[i][1], triAxes[i][2] )
+
+	end
+
+	love.graphics.pop()
 
 end
 
