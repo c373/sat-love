@@ -20,3 +20,42 @@ function GenerateAxes( polygon, edges, axes )
 	end
 
 end
+
+
+function Project( axis, vertices )
+
+	local min = Dot( vertices[1], axis )
+	local max = min
+
+	for i = 2, #vertices, 1 do
+
+		local p = Dot( vertices[i], axis )
+
+		if p < min then
+			min = p
+		elseif p > max then
+			max = p
+		end
+
+	end
+
+	return { min, max }
+
+end
+
+function Overlap( p1, p2 )
+
+	if p1[1] < p2[2] and p1[2] > p2[1] then
+		return true
+	else
+		return false
+	end
+
+end
+
+
+function Dot( v1, v2 )
+
+	return v1[1] * v2[1] + v1[2] * v2[2]
+
+end

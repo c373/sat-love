@@ -65,6 +65,8 @@ function love.update( dt )
 	triPosition[1] = love.mouse.getX()
 	triPosition[2] = love.mouse.getY()
 
+	CheckCollision()
+
 end
 
 ------------------------------------------------------------
@@ -72,6 +74,12 @@ end
 ------------------------------------------------------------
 
 function love.draw()
+
+	if collision then
+		love.graphics.setColor( 1, 0, 0, 1 )
+	else
+		love.graphics.setColor( 1, 1, 1, 1 )
+	end
 
 	love.graphics.push()
 	love.graphics.translate( love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5 )
@@ -125,4 +133,42 @@ function love.keypressed( key, scancode, isrepeat )
 	   love.event.quit()
 	end
 
- end
+end
+
+
+function CheckCollision()
+
+	for i = 1, #axes, 1 do
+	
+		local axis = axes[i]
+
+		local p1 = Project( axis, vertices )
+		local p2 = Project( axis, triVertices )
+
+		if Overlap( p1, p2 ) then
+			
+			collision = false
+
+		end
+
+	end
+	
+	for i = 1, #triAxes, 1 do
+	
+		local axis = triAxes[i]
+
+		local p1 = Project( axis, vertices )
+		local p2 = Project( axis, triVertices )
+
+		if Overlap( p1, p2 ) then
+			
+			collision = false
+
+		end
+
+	end
+
+	collision = true
+
+end
+

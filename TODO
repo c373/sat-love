@@ -1,0 +1,5 @@
+the translation of the vertices must be done at the time that the axes are generated and the vertices of the shape must be the modified ones at the time of collision check
+
+if might be best to have two sets of vertices to represent the collision body for each game object, one to represent the origin shape and the second to hold the modified vertices after the transformation matrix is applied
+
+using a transform matrix on a table that will just be overwritten each update and not created new will help performance also don't recalculate the transformed vertices of an object that hasn't moved (OPTOMIZATION)
