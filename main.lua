@@ -27,6 +27,7 @@ function love.load()
 	)
 
 	vertices = {}
+	verticesT = {}
 
 	for i = 1, mesh:getVertexCount(), 1 do
 		
@@ -40,6 +41,7 @@ function love.load()
 	GenerateAxes( vertices, edges, axes )
 
 	triVertices = {}
+	triVerticesT = {}
 
 	for i = 1, triMesh:getVertexCount(), 1 do
 		
