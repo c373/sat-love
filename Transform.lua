@@ -1,30 +1,30 @@
-transform = {}
+Transform = {}
 
-transform.matrix = {
+Transform.matrix = {
 	{ 1, 0, 0 },
 	{ 0, 1, 0 },
 	{ 0, 0, 1 }
 }
 
-function transform:new()
+function Transform:New()
 
 	local t = {}
 
 	self.__index = self
-	setmetatable( t, transform )
+	setmetatable( t, Transform )
 
 	return t
 
 end
 
-function transform:Translate( x, y )
+function Transform:Translate( x, y )
 
 	self.matrix[1][3] = x
 	self.matrix[2][3] = y
 
 end
 
-function transform:Rotate( angle )
+function Transform:Rotate( angle )
 
 	self.matrix[1][1] = math.cos( angle )
 	self.matrix[1][2] = math.sin( angle )
@@ -33,7 +33,7 @@ function transform:Rotate( angle )
 
 end
 
-function transform:Apply( vector )
+function Transform:Apply( vector )
 
 	local x = vector[1]
 	local y = vector[2]
@@ -43,7 +43,7 @@ function transform:Apply( vector )
 
 end
 
-function transform:Reset()
+function Transform:Reset()
 
 	self.matrix[1][1] = 1
 	self.matrix[1][2] = 0

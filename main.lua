@@ -1,5 +1,5 @@
-require "sat"
-require "transform"
+require "SAT"
+require "Transform"
 
 ------------------------------------------------------------
 --	L O A D
@@ -17,16 +17,6 @@ function love.load()
 		"dynamic"
 	)
 
-	triMesh = love.graphics.newMesh(
-		{
-			{ 10, -10, 0, 0, 1, 1, 1, 1 },
-			{ 0, 10, 0, 0, 1, 1, 1, 1 },
-			{ -10, -10, 0, 0, 1, 1, 1, 1 }
-		},
-		"fan",
-		"dynamic"
-	)
-
 	vertices = {}
 	verticesT = {}
 
@@ -39,7 +29,30 @@ function love.load()
 	edges = {}
 	axes = {}
 
+	transformer = Transform:New()
+
+	transformer:Rotate( 45 )
+	transformer:Translate( 100, 100 )
+
+	for i = 1, #vertices, 1 do
+	
+		transformer:Apply( vertices[i] )
+
+	end
+
 	GenerateAxes( vertices, edges, axes )
+
+	mesh:setVertices( vertices, 1, 3 )
+
+	triMesh = love.graphics.newMesh(
+		{
+			{ 10, -10, 0, 0, 1, 1, 1, 1 },
+			{ 0, 10, 0, 0, 1, 1, 1, 1 },
+			{ -10, -10, 0, 0, 1, 1, 1, 1 }
+		},
+		"fan",
+		"dynamic"
+	)
 
 	triVertices = {}
 	triVerticesT = {}
