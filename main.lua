@@ -30,8 +30,8 @@ function love.load()
 
 	transformer = Transform:New()
 
-	transformer:Rotate( 45 )
-	transformer:Translate( 100, 100 )
+	transformer:Rotate( 1.67 )
+	--transformer:Translate( 50, 50 )
 
 	for i = 1, #vertices, 1 do
 	
@@ -64,8 +64,6 @@ function love.load()
 	triEdges = {}
 	triAxes = {}
 
-	mouseTransform = Transform:New()
-
 	GenerateAxes( triVertices, triEdges, triAxes )
 
 end
@@ -75,16 +73,6 @@ end
 ------------------------------------------------------------
 
 function love.update( dt )
-
-	mouseTransform:Translate( love.mouse.getX(), love.mouse.getY() )
-
-	for i = 1, #triVertices, 1 do
-	
-	mouseTransform:Apply( triVertices[i] )
-
-	end
-
-	GenerateAxes( triVertices, triEdges, triAxes )
 
 	collision = CheckCollision( axes, vertices, triAxes, triVertices )
 
@@ -123,11 +111,6 @@ function love.draw()
 
 	end
 
-	love.graphics.pop()
-
-	love.graphics.push()
-	love.graphics.translate( love.mouse.getX(), love.mouse.getY() )
-	
 	love.graphics.draw( triMesh, 0, 0 )
 
 
