@@ -33,13 +33,31 @@ function Transform:Rotate( angle )
 
 end
 
-function Transform:Apply( vector )
+function Transform:ApplyVertices( input, output )
 
-	local x = vector[1]
-	local y = vector[2]
+	local x, y
 
-	vector[1] = self.matrix[1][1] * x + self.matrix[1][2] * y + self.matrix[1][3]
-	vector[2] = self.matrix[2][1] * x + self.matrix[2][2] * y + self.matrix[2][3]
+	print( #input..#output )
+
+	for i = 1, #input, 1 do
+
+		x = input[i][1]
+		y = input[i][2]
+
+		output[i][1] = self.matrix[1][1] * x + self.matrix[1][2] * y + self.matrix[1][3]
+		output[i][2] = self.matrix[2][1] * x + self.matrix[2][2] * y + self.matrix[2][3]
+
+	end
+
+end
+
+function Transform:ApplyVector( input, output )
+
+	local x = input[1]
+	local y = input[2]
+
+	output[1] = self.matrix[1][1] * x + self.matrix[1][2] * y + self.matrix[1][3]
+	output[2] = self.matrix[2][1] * x + self.matrix[2][2] * y + self.matrix[2][3]
 
 end
 

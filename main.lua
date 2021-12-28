@@ -1,5 +1,5 @@
-require "SAT"
-require "Transform"
+require "sat"
+require "transform"
 
 ------------------------------------------------------------
 --	L O A D
@@ -18,10 +18,12 @@ function love.load()
 	)
 
 	vertices = {}
+	verticesTransformed = {}
 
 	for i = 1, mesh:getVertexCount(), 1 do
 		
 		vertices[ #vertices + 1 ] = { mesh:getVertex( i ) }
+		verticesTransformed[ #verticesTransformed + 1 ] = { mesh:getVertex( i ) }
 
 	end
 
@@ -31,13 +33,9 @@ function love.load()
 	transformer = Transform:New()
 
 	transformer:Rotate( 1.67 )
-	--transformer:Translate( 50, 50 )
+	transformer:Translate( 50, 50 )
 
-	for i = 1, #vertices, 1 do
-	
-		transformer:Apply( vertices[i] )
-
-	end
+	transformer:ApplyVertices( vertices, verticesTransformed )
 
 	GenerateAxes( vertices, edges, axes )
 
