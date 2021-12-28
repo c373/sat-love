@@ -18,7 +18,6 @@ function love.load()
 	)
 
 	vertices = {}
-	verticesT = {}
 
 	for i = 1, mesh:getVertexCount(), 1 do
 		
@@ -55,7 +54,6 @@ function love.load()
 	)
 
 	triVertices = {}
-	triVerticesT = {}
 
 	for i = 1, triMesh:getVertexCount(), 1 do
 		
@@ -66,9 +64,9 @@ function love.load()
 	triEdges = {}
 	triAxes = {}
 
-	GenerateAxes( triVertices, triEdges, triAxes )
+	mouseTransform = Transform:New()
 
-	triPosition = { 0, 0 }
+	GenerateAxes( triVertices, triEdges, triAxes )
 
 end
 
@@ -78,10 +76,17 @@ end
 
 function love.update( dt )
 
-	triPosition[1] = love.mouse.getX()
-	triPosition[2] = love.mouse.getY()
+	mouseTransform:Translate( love.mouse.getX(), love.mouse.getY() )
 
-	CheckCollision()
+	for i = 1, #triVertices, 1 do
+	
+	mouseTransform:Apply( triVertices[i] )
+
+	end
+
+	GenerateAxes( triVertices, triEdges, triAxes )
+
+	collision = CheckCollision( axes, vertices, triAxes, triVertices )
 
 end
 
@@ -121,7 +126,7 @@ function love.draw()
 	love.graphics.pop()
 
 	love.graphics.push()
-	love.graphics.translate( triPosition[1], triPosition[2] )
+	love.graphics.translate( love.mouse.getX(), love.mouse.getY() )
 	
 	love.graphics.draw( triMesh, 0, 0 )
 
@@ -150,41 +155,3 @@ function love.keypressed( key, scancode, isrepeat )
 	end
 
 end
-
-
-function CheckCollision()
-
-	for i = 1, #axes, 1 do
-	
-		local axis = axes[i]
-
-		local p1 = Project( axis, vertices )
-		local p2 = Project( axis, triVertices )
-
-		if Overlap( p1, p2 ) then
-			
-			collision = false
-
-		end
-
-	end
-	
-	for i = 1, #triAxes, 1 do
-	
-		local axis = triAxes[i]
-
-		local p1 = Project( axis, vertices )
-		local p2 = Project( axis, triVertices )
-
-		if Overlap( p1, p2 ) then
-			
-			collision = false
-
-		end
-
-	end
-
-	collision = true
-
-end
-

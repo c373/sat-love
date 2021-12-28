@@ -28,7 +28,7 @@ function Transform:Rotate( angle )
 
 	self.matrix[1][1] = math.cos( angle )
 	self.matrix[1][2] = math.sin( angle )
-	self.matrix[2][1] = math.sin( angle ) * -1
+	self.matrix[2][1] = -math.sin( angle )
 	self.matrix[2][2] = math.cos( angle )
 
 end

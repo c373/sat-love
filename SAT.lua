@@ -21,6 +21,39 @@ function GenerateAxes( polygon, edges, axes )
 
 end
 
+function CheckCollision( axes1, vertices1, axes2, vertices2 )
+
+	local axis, p1, p2
+
+	for i = 1, #axes1, 1 do
+	
+		axis = axes1[i]
+
+		p1 = Project( axis, vertices1 )
+		p2 = Project( axis, vertices2 )
+
+		if not Overlap( p1, p2 ) then
+			return false
+		end
+
+	end
+	
+	for i = 1, #axes2, 1 do
+	
+		axis = axes2[i]
+
+		p1 = Project( axis, vertices1 )
+		p2 = Project( axis, vertices2 )
+
+		if not Overlap( p1, p2 ) then
+			return false
+		end
+
+	end
+
+	return true
+
+end
 
 function Project( axis, vertices )
 
