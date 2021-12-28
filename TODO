@@ -10,3 +10,5 @@ ADD TRANSFORM SUPPORT TO THE SAT ALGO!!!
 Axes and edges should be calculated on each update and the transformation matrix applied and stored to the transformed vertices table, actually they should be done in the opposite order the transform applied then the rest
 
 For some reason the axes are generated from 0,0 and still cause a collision with the other object
+
+I need to use an identity set of vertices and translate the matrix from that or use only the delta for each frame when we translate (only the difference)
