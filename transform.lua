@@ -37,8 +37,6 @@ function Transform:ApplyVertices( input, output )
 
 	local x, y
 
-	print( #input..#output )
-
 	for i = 1, #input, 1 do
 
 		x = input[i][1]

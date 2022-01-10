@@ -1,6 +1,7 @@
 -- SEPERATE AXIS THEOREM
 
 -- UTILITY FUNCTIONS
+
 function GenerateAxes( polygon, edges, axes )
 
 	for i = 1, #polygon, 1 do

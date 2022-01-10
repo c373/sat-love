@@ -9,9 +9,9 @@ function love.load()
 
 	mesh = love.graphics.newMesh(
 		{
-			{ 0, 0, 0, 0, 1, 0, 0, 1 },
-			{ 100, 0, 0, 0, 0, 1, 0, 1 },
-			{ 100, 100, 0, 0, 0, 0, 1, 1 }
+			{ 100, -100, 0, 0, 1, 0, 0, 1 },
+			{ 0, 100, 0, 0, 1, 0, 1, 1 },
+			{ -100, -100, 0, 0, 1, 1, 0, 1 }
 		},
 		"fan",
 		"dynamic"
@@ -33,19 +33,19 @@ function love.load()
 	transformer = Transform:New()
 
 	transformer:Rotate( 1.67 )
-	transformer:Translate( 50, 50 )
+	--transformer:Translate( 100, 100 )
 
 	transformer:ApplyVertices( vertices, verticesTransformed )
 
-	GenerateAxes( vertices, edges, axes )
+	GenerateAxes( verticesTransformed, edges, axes )
 
-	mesh:setVertices( vertices, 1, 3 )
+	mesh:setVertices( verticesTransformed, 1, 3 )
 
 	triMesh = love.graphics.newMesh(
 		{
-			{ 10, -10, 0, 0, 1, 1, 1, 1 },
-			{ 0, 10, 0, 0, 1, 1, 1, 1 },
-			{ -10, -10, 0, 0, 1, 1, 1, 1 }
+			{ 100, -100, 0, 0, 1, 0, 0, 1 },
+			{ 0, 100, 0, 0, 1, 0, 1, 1 },
+			{ -100, -100, 0, 0, 1, 1, 0, 1 }
 		},
 		"fan",
 		"dynamic"
@@ -64,6 +64,10 @@ function love.load()
 
 	GenerateAxes( triVertices, triEdges, triAxes )
 
+
+	x, y = 0, 0
+	rotation = 0
+
 end
 
 ------------------------------------------------------------
@@ -72,7 +76,40 @@ end
 
 function love.update( dt )
 
-	collision = CheckCollision( axes, vertices, triAxes, triVertices )
+	if love.keyboard.isDown( "right" ) then
+		x = x + 5
+	end
+
+	if love.keyboard.isDown( "left" ) then
+		x = x - 5
+	end
+
+	if love.keyboard.isDown( "down" ) then
+		y = y + 5
+	end
+
+	if love.keyboard.isDown( "up" ) then
+		y = y - 5
+	end
+
+	if love.keyboard.isDown( "," ) then
+		rotation = rotation - 0.05
+	end
+
+	if love.keyboard.isDown( "." ) then
+		rotation = rotation + 0.05
+	end
+	
+	transformer:Reset()
+	transformer:Rotate( rotation )
+	transformer:Translate( x, y )
+	transformer:ApplyVertices( vertices, verticesTransformed )
+	
+	GenerateAxes( verticesTransformed, edges, axes )
+
+	mesh:setVertices( verticesTransformed, 1, 3 )
+
+	collision = CheckCollision( axes, verticesTransformed, triAxes, triVertices )
 
 end
 
@@ -93,22 +130,6 @@ function love.draw()
 	
 	love.graphics.draw( mesh, 0, 0 )
 
-	for i = 0, #vertices - 1, 1 do
-
-		love.graphics.print( vertices[i + 1], -960, -540 + i * 10 )
-		love.graphics.print( axes[i + 1], -960, -510 + i * 10 )
-
-	end
-
-	for i = 1, #axes, 1 do
-	
-		local n = i + 1
-		if n > #axes then n = 1 end
-
-		love.graphics.line( 0, 0, axes[i][1], axes[i][2] )
-
-	end
-
 	love.graphics.draw( triMesh, 0, 0 )
 
 
@@ -122,6 +143,32 @@ function love.draw()
 	end
 
 	love.graphics.pop()
+
+	love.graphics.push()
+
+	love.graphics.translate( love.graphics.getWidth() * 0.5 + x, love.graphics.getHeight() * 0.5 + y )
+
+	for i = 1, #axes, 1 do
+	
+		local n = i + 1
+		if n > #axes then n = 1 end
+
+		love.graphics.line( 0, 0, axes[i][1], axes[i][2] )
+
+	end
+
+	love.graphics.pop()
+
+	love.graphics.setColor( 1, 1, 1, 1 )
+
+	for i = 0, #verticesTransformed - 1, 1 do
+
+		love.graphics.print( "verticesTransformed["..(i + 1).."] "..verticesTransformed[i + 1][1]..", "..verticesTransformed[i + 1][2], 0, i * 10 )
+		love.graphics.print( "axes["..(i + 1).."] "..axes[i + 1][1]..", "..axes[i + 1][2], 0, 30 + i * 10 )
+
+	end
+
+	love.graphics.print( "Use arrows to move the triangle and ',' or '.' to rotate it", 660, 1000, 0, 2, 2 )
 
 end
 
