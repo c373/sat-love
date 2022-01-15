@@ -121,6 +121,7 @@ function love.draw()
 
 	if collision then
 		love.graphics.setColor( 1, 0, 0, 1 )
+		love.graphics.print("COLLISION!", 0, 980, 0, 2, 2 )
 	else
 		love.graphics.setColor( 1, 1, 1, 1 )
 	end
@@ -168,7 +169,7 @@ function love.draw()
 
 	end
 
-	love.graphics.print( "Use arrows to move the triangle and ',' or '.' to rotate it", 660, 1000, 0, 2, 2 )
+	love.graphics.print( "Use arrows to move the triangle and ',' or '.' to rotate it", 0, 1000, 0, 2, 2 )
 
 end
 
