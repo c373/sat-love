@@ -12,3 +12,12 @@ Axes and edges should be calculated on each update and the transformation matrix
 For some reason the axes are generated from 0,0 and still cause a collision with the other object
 
 I need to use an identity set of vertices and translate the matrix from that or use only the delta for each frame when we translate (only the difference)
+
+
+IMPLEMENTATION
+
+To implement in another codebase we need to have each game object contain the following:
+	1. The mesh to be drawn which will not be modified
+	2. An identity copy of the mesh vertices
+	3. A transform object to contain the vertex transformations
+	4. Table with the modified vertices to use for the collision detection
